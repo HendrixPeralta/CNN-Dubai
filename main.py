@@ -53,6 +53,8 @@ for image_type in ["images" , "masks"]:
         for image_id in range(1,20):
             image = cv2.imread(f"{dataset_root_folder}/{dataset_name}/Tile {tile_id}/{image_type}/image_part_00{image_id}.{image_extension}")
             if image is not None: 
+                if image_type == "masks":
+                    iamge = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 #print(image.shape)
                 size_x = (image.shape[0]//patch_size)*patch_size
                 size_y = (image.shape[1]//patch_size)*patch_size
