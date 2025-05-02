@@ -8,6 +8,8 @@ from patchify import patchify
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from matplotlib import pyplot as plt
 import random
+from sklearn.model_selection import train_test_split 
+from tensorflow.keras.utils import to_categorical
 
 # %%
 minmaxscaler = MinMaxScaler()
@@ -217,3 +219,16 @@ plt.tight_layout()
 plt.show()
 
 # %%
+total_classes = len(np.unique(labels))
+labels_categorical_dataset = to_categorical(labels, num_classes=total_classes)
+
+master_training_dataset = image_dataset
+#%%
+print(master_training_dataset.shape)
+print(labels_categorical_dataset.shape)
+
+
+# %%
+# Creating training data 
+
+X_, Y, x, y = train_test_split(master_training_dataset, labels_categorical_dataset, 0.7)
