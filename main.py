@@ -2,22 +2,27 @@
 
 import os 
 import cv2 
-from PIL import Image 
 import numpy as np 
-from patchify import patchify
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from matplotlib import pyplot as plt
 import random
+
+from patchify import patchify
+from matplotlib import pyplot as plt
+from PIL import Image 
+
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from tensorflow.keras.metrics import MeanIoU
 from sklearn.model_selection import train_test_split 
 from tensorflow.keras.utils import to_categorical
 
-# %%
-minmaxscaler = MinMaxScaler()
+scaler = MinMaxScaler()
 # %%
 dataset_root_folder = r"C:\Users\hendr\Desktop\programming\CNN-Dubai\resources"
-# %%
 dataset_name = "Semantic segmentation dataset"
+patch_size = 256
 # %%
+
+# %%
+image_dataset = []
 for path, subdirs, files in os.walk(os.path.join(dataset_root_folder,dataset_name)):
     dir_name = path.split(os.path.sep)[-1]
     if dir_name == "images": 
@@ -25,10 +30,51 @@ for path, subdirs, files in os.walk(os.path.join(dataset_root_folder,dataset_nam
         #print(path)
         for i, image_name in enumerate(images):
             if (image_name.endswith(".jpg")):
-                print(image_name)        
-# %%
-image = cv2.imread(f"{dataset_root_folder}/{dataset_name}/Tile 2/images/image_part_001.jpg",1)
-
+                image = cv2.imread(path+"/"+image_name,1)
+                SIZE_X = (image.shape[1]//patch_size)*patch_size
+                SIZE_Y = (image.shape[0]//patch_size)*patch_size
+                image = Image.fromarray(image)
+                image = image.crop((0, 0, SIZE_X, SIZE_Y))            
+                
+                image = np.array(image)
+                
+                # Extract Patches 
+                patched_img = patchify(image, (patch_size,patch_size, 3), step=patch_size)
+                
+                for i in range(patched_img.shape[0]):
+                    for j in range(patched_img.shape[1]):
+                        single_patched_img = patched_img[i,j,:,:]
+                        
+                        single_patched_img = scaler.fit_transform(single_patched_img.reshape(-1,single_patched_img.shape[-1])).reshape(single_patched_img.shape)
+                        single_patched_img = single_patched_img[0]
+                        image_dataset.append(single_patched_img)
+  # %%
+mask_dataset = []
+for path, subdirs, files in os.walk(os.path.join(dataset_root_folder,dataset_name)):
+    dir_name = path.split(os.path.sep)[-1]
+    if dir_name == "masks":
+        mask = os.listdir(path)
+        for i, mask_name in enumerate(mask):
+            if (mask_name.endswith(".png")):
+                mask = cv2.imread(path+"/"+mask_name,1)
+                mask = cv2.cvtColor(mask,cv2.COLOR_BGR2RGB)
+                SIZE_X = (mask.shape[1]//patch_size)*patch_size
+                SIZE_Y = (mask.shape[0]//patch_size)*patch_size
+                mask =Image.fromarray(mask)
+                mask = mask.crop((0, 0, SIZE_X, SIZE_Y))
+                
+                mask = np.array(mask)
+                
+                patched_mask = patchify(mask, (patch_size, patch_size,3), step=patch_size)
+                
+                for i in range(patched_mask.shape[0]):
+                    for j in range(patched_mask.shape[1]):
+                        single_patched_mask = patched_mask[i, j, :, :]
+                        
+                        single_patched_mask = scaler.fit_transform(single_patched_mask.reshape(-1,single_patched_mask.shape[-1])).reshape(single_patched_mask.shape)
+                        
+                        single_patched_mask = single_patched_mask[0]
+                        mask_dataset.append(single_patched_mask)
 # %%
 patch_size = 256
 
