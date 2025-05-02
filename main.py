@@ -69,17 +69,17 @@ for image_type in ["images" , "masks"]:
                 
                 #selecting the images from the patches 
                 for i in range(image_patches.shape[0]):
-                    for j in range(image_patches.shape[1]):
-                        individual_patched_images = image_patches[i,j,:,:]
-                        # print(individual_patched_images.shape)
-                        
-                        # MinMaxing 
-                        individual_patched_images = minmaxscaler.fit_transform(individual_patched_images.reshape(-1, individual_patched_images.shape[-1])).reshape(individual_patched_images.shape)
-                        
-                        individual_patched_images = individual_patched_images[0]
-                        # print(individual_patched_images.shape)
-
+                    for j in range(image_patches.shape[1]):                        
                         if image_type == "images":
+                            individual_patched_images = image_patches[i,j,:,:]
+                        # print(individual_patched_images.shape)
+                         
+                        # MinMaxing 
+                            individual_patched_images = minmaxscaler.fit_transform(individual_patched_images.reshape(-1, individual_patched_images.shape[-1])).reshape(individual_patched_images.shape)
+                            
+                            individual_patched_images = individual_patched_images[0]
+                            # print(individual_patched_images.shape)
+
                             image_dataset.append(individual_patched_images)
                         else: 
                             mask_dataset.append(individual_patched_images)
