@@ -6,6 +6,8 @@ from PIL import Image
 import numpy as np 
 from patchify import patchify
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from matplotlib import pyplot as plt
+import random
 
 # %%
 minmaxscaler = MinMaxScaler()
@@ -47,14 +49,14 @@ mask_dataset = []
 for image_type in ["images" , "masks"]:
     if image_type == "images":
         image_extension = "jpg" 
-    else: 
+    elif image_type == "masks": 
         image_extension = "png" 
     for tile_id in range(1,8):
         for image_id in range(1,20):
             image = cv2.imread(f"{dataset_root_folder}/{dataset_name}/Tile {tile_id}/{image_type}/image_part_00{image_id}.{image_extension}")
             if image is not None: 
                 if image_type == "masks":
-                    iamge = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 #print(image.shape)
                 size_x = (image.shape[0]//patch_size)*patch_size
                 size_y = (image.shape[1]//patch_size)*patch_size
@@ -76,15 +78,13 @@ for image_type in ["images" , "masks"]:
                          
                         # MinMaxing 
                             individual_patched_images = minmaxscaler.fit_transform(individual_patched_images.reshape(-1, individual_patched_images.shape[-1])).reshape(individual_patched_images.shape)
-                            
                             individual_patched_images = individual_patched_images[0]
                             # print(individual_patched_images.shape)
-
                             image_dataset.append(individual_patched_images)
-                        else: 
+                        elif image_type == "masks": 
                             individual_patched_masks = image_patches[i,j,:,:]
                             individual_patched_masks = individual_patched_masks[0] 
-                            mask_dataset.append(individual_patched_images)
+                            mask_dataset.append(individual_patched_masks)
 
                     
 # %%
@@ -100,4 +100,24 @@ print(len(image_dataset))
 print(len(mask_dataset))
 
 # %%
+random_image_id = random.randint(0, len(image_dataset))
+
+plt.figure(figsize=(14,8))
+
+plt.subplot(121)  # First subplot
+plt.imshow(image_dataset[random_image_id])
+plt.title("Image Patch")
+plt.axis("off")
+
+plt.subplot(122)  # Second subplot
+plt.imshow(mask_dataset[random_image_id], cmap='gray')  # If mask is grayscale
+plt.title("Mask Patch")
+plt.axis("off")
+
+plt.tight_layout()
+plt.show()
+
  
+# %%
+plt.imshow(mask_dataset[0])
+# %%
