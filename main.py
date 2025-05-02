@@ -82,6 +82,8 @@ for image_type in ["images" , "masks"]:
 
                             image_dataset.append(individual_patched_images)
                         else: 
+                            individual_patched_masks = image_patches[i,j,:,:]
+                            individual_patched_masks = individual_patched_masks[0] 
                             mask_dataset.append(individual_patched_images)
 
                     
