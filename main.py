@@ -233,8 +233,22 @@ print(labels_categorical_dataset.shape)
 
 X_train, x_test, Y_train, y_test = train_test_split(master_training_dataset, labels_categorical_dataset, test_size=0.15, random_state=100)
 
-training_test_datasets = [X_train, x_yest, Y_train, y_test]
+training_test_datasets = [X_train, x_test, Y_train, y_test]
 
 for dataset in training_test_datasets:
     print(dataset.shape)
+    
+# ------------------^---------------------------------------------------------
+# %%
+from keras.models import Model
+from keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, Conv2DTranspose
+from keras.layers import concatenate, BatchNormalization, Dropout, Lambda
+# %%
+from keras import backend as k 
+# %%
+def jaccard_coef(y_true, y_pred):
+    y_pred_flatten = k.flatten(y_pred)
+    y_true_flatten = k.flatten(y_true)
+    intersection = k.sum(y_true_flatten * y_pred_flatten)
+    iou = (intersection + 1.0 ) / (k.sum(y_true_flatten) + k.sum(y_pred_flatten) - intersection + 1.0)
     
