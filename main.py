@@ -89,7 +89,15 @@ for image_type in ["images" , "masks"]:
                     
 # %%
 print(len(image_dataset))
-# %%
 print(len(mask_dataset))
+# %%
+mask_dataset[0]
+# %%
+image_dataset = np.array(image_dataset)
+mask_dataset = np.array(mask_dataset) 
+# %%
+print(len(image_dataset))
+print(len(mask_dataset))
+
 # %%
  
