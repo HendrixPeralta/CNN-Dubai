@@ -231,4 +231,10 @@ print(labels_categorical_dataset.shape)
 # %%
 # Creating training data 
 
-X_, Y, x, y = train_test_split(master_training_dataset, labels_categorical_dataset, 0.7)
+X_train, x_test, Y_train, y_test = train_test_split(master_training_dataset, labels_categorical_dataset, test_size=0.15, random_state=100)
+
+training_test_datasets = [X_train, x_yest, Y_train, y_test]
+
+for dataset in training_test_datasets:
+    print(dataset.shape)
+    
