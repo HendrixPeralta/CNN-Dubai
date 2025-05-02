@@ -173,6 +173,8 @@ def rgb_to_label(label):
     label_segment[np.all(label == class_building, axis=-1)] = 3
     label_segment[np.all(label == class_vegetation, axis=-1)] = 4
     label_segment[np.all(label == class_unlabeled, axis=-1)] = 5
+    
+    label_segment = label_segment[:,:,0]
     return label_segment
 
 # %%
@@ -184,6 +186,3 @@ for i in range(mask_dataset.shape[0]):
 labels = np.array(labels)
 # %%
 print(len(labels))
-# %%
-labels[450]
-# %%
