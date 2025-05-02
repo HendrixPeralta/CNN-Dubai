@@ -159,3 +159,31 @@ class_unlabeled = "#9B9B9B"
 class_unlabeled = class_unlabeled.strip("#")
 class_unlabeled = np.array(tuple(int(class_unlabeled[i:i+2],16)for i in (0,2,4)))
 print(class_unlabeled)
+
+
+# %%
+mask_dataset.shape[0]
+# %%
+# 
+def rgb_to_label(label):
+    label_segment = np.zeros(label.shape, dtype=np.uint8)
+    label_segment[np.all(label == class_water, axis=-1)] = 0 
+    label_segment[np.all(label == class_land, axis=-1)] = 1
+    label_segment[np.all(label == class_road, axis=-1)] =2
+    label_segment[np.all(label == class_building, axis=-1)] = 3
+    label_segment[np.all(label == class_vegetation, axis=-1)] = 4
+    label_segment[np.all(label == class_unlabeled, axis=-1)] = 5
+    return label_segment
+
+# %%
+labels = []
+for i in range(mask_dataset.shape[0]):
+    label = rgb_to_label(mask_dataset[i])
+    labels.append(label)
+    
+labels = np.array(labels)
+# %%
+print(len(labels))
+# %%
+labels[450]
+# %%
