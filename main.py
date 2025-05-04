@@ -336,4 +336,40 @@ model.save(r'C:\Users\hendr\Desktop\programming\CNN-Dubai\models.keras')
 #                    custom_objects={'dice_loss_plus_2focal_loss': total_loss,
 #                                    'jacard_coef':jacard_coef})
 
+
+#%%
+
+#IoU
+y_pred=model.predict(x_test)
+y_pred_argmax = np.argmax(y_pred, axis=3)
+y_test_argmax = np.argmax(y_test, axis=3)
+
+
+IoU_keras = MeanIoU(num_classes=n_classes)
+IoU_keras.update_state(y_test_argmax, y_pred_argmax)
+print("Mean IoU =", IoU_keras.result().numpy())
+
+#%%
+test_img_id = random.randint(0, len(x_test))
+test_img = x_test[test_img_id]
+ground_truth = y_test_argmax[test_img_id]
+
+test_img_input = np.expand_dims(test_img, 0)
+prediction = (model.predict(test_img_input))
+predicted_img = np.argmax(prediction, axis=3)[0,:,:]
+
+plt.figure(figsize=(12,8))
+plt.subplot(231)
+plt.title("Testing Image")
+plt.imshow(test_img)
+
+plt.subplot(232)
+plt.title("Testing label")
+plt.imshow(ground_truth)
+
+plt.subplot(233)
+plt.title("Prediction on tested Image")
+plt.imshow(predicted_img)
+plt.show()
+
 # %%
