@@ -195,6 +195,8 @@ for dataset in training_test_datasets:
 from keras.models import Model
 from keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, Conv2DTranspose
 from keras.layers import concatenate, BatchNormalization, Dropout, Lambda
+
+import segmentation_models as sm
 # %%
 from keras import backend as k 
 # %%
@@ -275,4 +277,21 @@ def get_model():
     return unet_model(n_classes=n_classes, image_height=image_height, image_width=image_width, image_channels=image_channels)
 # %%
 model = get_model()
+
+# %%
+
+weights = [0.1666, 0.1666, 0.1666, 0.1666, 0.1666, 0.1666]
+dice_loss = sm.losses.DiceLoss(class_weights=weights)
+focal_loss = sm.losses.CategoricalFocalLoss()
+total_loss = dice_loss + (1*focal_loss)
+# %%
+
+import tensorflow as tf 
+
+# %%
+tf.keras.backend.clear_session()
+# %%
+model.compile(optimizer="adam", loss=total_loss, metrics=metrics)
+model.summary
+# model.input_shape
 # %%
