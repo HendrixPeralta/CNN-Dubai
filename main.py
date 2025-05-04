@@ -75,97 +75,63 @@ for path, subdirs, files in os.walk(os.path.join(dataset_root_folder,dataset_nam
                         
                         single_patched_mask = single_patched_mask[0]
                         mask_dataset.append(single_patched_mask)
+                        
+                        
+                        
 # %%
-patch_size = 256
+image_dataset = np.array(image_dataset)
+mask_dataset = np.array(mask_dataset)                        
+# %%
+image_id = random.randint(0, len(image_dataset))
+plt.figure(figsize=(12,6))
+plt.subplot(121)
+plt.imshow(np.reshape(image_dataset[image_id], (patch_size,patch_size,3)))
+plt.subplot(122)
+plt.imshow(np.reshape(mask_dataset[image_id], (patch_size, patch_size, 3)))
+plt.show()
+
+
+# random_image_id = random.randint(0, len(image_dataset))
+
+# plt.figure(figsize=(14,8))
+
+# plt.subplot(121)  # First subplot
+# plt.imshow(image_dataset[random_image_id])
+# plt.title("Image Patch")
+# plt.axis("off")
+
+# plt.subplot(122)  # Second subplot
+# plt.imshow(mask_dataset[random_image_id], cmap='gray')  # If mask is grayscale
+# plt.title("Mask Patch")
+# plt.axis("off")
+
+# plt.tight_layout()
+# plt.show()
 
 # %%
-image_patches = patchify(image, (patch_size, patch_size, 3), step=patch_size) 
-image_patches
+
 # %%
-len(image_patches)
+
 # %%
-image.shape[0]//patch_size*patch_size
 # %%
 print(type(image))
 # %%
-print(type(Image.fromarray(image)))
 
 # %%
-image_dataset = []
-mask_dataset = []
 
-for image_type in ["images" , "masks"]:
-    if image_type == "images":
-        image_extension = "jpg" 
-    elif image_type == "masks": 
-        image_extension = "png" 
-    for tile_id in range(1,8):
-        for image_id in range(1,20):
-            image = cv2.imread(f"{dataset_root_folder}/{dataset_name}/Tile {tile_id}/{image_type}/image_part_00{image_id}.{image_extension}")
-            if image is not None: 
-                if image_type == "masks":
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                #print(image.shape)
-                size_x = (image.shape[0]//patch_size)*patch_size
-                size_y = (image.shape[1]//patch_size)*patch_size
-                #print("{} === {} - {}".format(image.shape, size_x, size_y))
-                image = Image.fromarray(image)
-                image = image.crop((0, 0, size_x, size_y))
-                #print("{}, {}".format(image.size[0],image.size[1]))
-                
-                #Converting back to an array 
-                image = np.array(image)
-                image_patches = patchify(image, (patch_size, patch_size,3), step=patch_size)
-                
-                #selecting the images from the patches 
-                for i in range(image_patches.shape[0]):
-                    for j in range(image_patches.shape[1]):                        
-                        if image_type == "images":
-                            individual_patched_images = image_patches[i,j,:,:]
-                        # print(individual_patched_images.shape)
-                         
-                        # MinMaxing 
-                            individual_patched_images = minmaxscaler.fit_transform(individual_patched_images.reshape(-1, individual_patched_images.shape[-1])).reshape(individual_patched_images.shape)
-                            individual_patched_images = individual_patched_images[0]
-                            # print(individual_patched_images.shape)
-                            image_dataset.append(individual_patched_images)
-                        elif image_type == "masks": 
-                            individual_patched_masks = image_patches[i,j,:,:]
-                            individual_patched_masks = individual_patched_masks[0] 
-                            mask_dataset.append(individual_patched_masks)
 # %%
-image_dataset = np.array(image_dataset)
-mask_dataset = np.array(mask_dataset)
+
                     
 # %%
-print(len(image_dataset))
-print(len(mask_dataset))
-# %%
-mask_dataset[0]
-# %%
-image_dataset = np.array(image_dataset)
-mask_dataset = np.array(mask_dataset) 
-# %%
-print(len(image_dataset))
-print(len(mask_dataset))
 
 # %%
-random_image_id = random.randint(0, len(image_dataset))
 
-plt.figure(figsize=(14,8))
+# %%
 
-plt.subplot(121)  # First subplot
-plt.imshow(image_dataset[random_image_id])
-plt.title("Image Patch")
-plt.axis("off")
+# %%
 
-plt.subplot(122)  # Second subplot
-plt.imshow(mask_dataset[random_image_id], cmap='gray')  # If mask is grayscale
-plt.title("Mask Patch")
-plt.axis("off")
+# %%
 
-plt.tight_layout()
-plt.show()
 
  
 # %%
