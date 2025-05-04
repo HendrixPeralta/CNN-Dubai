@@ -241,7 +241,7 @@ def unet_model(n_classes, image_height, image_width, image_channels):
     c6 = Conv2D(128, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(c6)
     
     u7 = Conv2DTranspose(64, (2,2), strides=(2,2), padding="same")(c6)
-    u7 = concatenate([u6, c3])
+    u7 = concatenate([u7, c3])
     c7 = Conv2D(64, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(u7)
     c7 = Dropout(0.2)(c7)
     c7 = Conv2D(64, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(c7)
