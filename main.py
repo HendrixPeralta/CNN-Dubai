@@ -303,3 +303,18 @@ history1 = model.fit(X_train,Y_train,
                      validation_data=(x_test,y_test),
                      shuffle=False)
 # %%
+history = history1
+loss = history.history["loss"]
+val_loss = history.history["val_loss"]
+epochs = range(1,len(loss)+1)
+
+plt.plot(epochs,loss,"y",label="Training loss")
+plt.plot(epochs,val_loss,"r",label="Validation loss")
+plt.title("Training and validation loss")
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.show()
+# %%
+
+
+# %%
