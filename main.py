@@ -256,7 +256,7 @@ def unet_model(n_classes, image_height, image_width, image_channels):
     u9 = concatenate([u9, c1], axis=3)
     c9 = Conv2D(16, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(u9)
     c9 = Dropout(0.2)(c9)
-    c9 = Conv2D(16, (3,3), activation="relu", kernel_initializer="he_jnormal", padding="same")(c9)
+    c9 = Conv2D(16, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(c9)
     
     output = Conv2D(n_classes, (1,1), activation="softmax")(c9)
     model = Model(inputs=[input], outputs=output)
