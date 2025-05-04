@@ -326,3 +326,14 @@ plt.xlabel("Epochs")
 plt.ylabel("IoU")
 plt.show()
 # %%
+model.save(r'C:\Users\hendr\Desktop\programming\CNN-Dubai\models.keras')
+# %%
+
+# IoU
+# from keras.models import load_model
+
+# model = load_model("models/satellite_standart_unet_100epochs.keras",
+#                    custom_objects={'dice_loss_plus_2focal_loss': total_loss,
+#                                    'jacard_coef':jacard_coef})
+
+# %%
