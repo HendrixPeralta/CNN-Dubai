@@ -203,4 +203,6 @@ def jaccard_coef(y_true, y_pred):
     y_true_flatten = k.flatten(y_true)
     intersection = k.sum(y_true_flatten * y_pred_flatten)
     iou = (intersection + 1.0 ) / (k.sum(y_true_flatten) + k.sum(y_pred_flatten) - intersection + 1.0)
-    
+    return iou
+# %%
+# Bulding the model 
