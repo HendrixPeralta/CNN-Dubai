@@ -262,3 +262,17 @@ def unet_model(n_classes, image_height, image_width, image_channels):
     model = Model(inputs=[input], outputs=output)
     
     return model
+
+# %%
+metrics = ["accuracy", jaccard_coef]
+# %%
+
+image_height = X_train.shape[1]
+image_width = X_train.shape[2]
+image_channels = X_train.shape[3]
+
+def get_model():
+    return unet_model(n_classes=n_classes, image_height=image_height, image_width=image_width, image_channels=image_channels)
+# %%
+model = get_model()
+# %%
