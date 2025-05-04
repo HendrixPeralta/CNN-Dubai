@@ -230,7 +230,7 @@ def unet_model(n_classes, image_height, image_width, image_channels):
     
     c5 = Conv2D(256, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(p4)
     c5  = Dropout(0.2)(c5)
-    c5 = Conv2D(256, (3,3), activation="relu", kernel_intializer="he_normal", padding="same")(c5)
+    c5 = Conv2D(256, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(c5)
     
     #Expansive path
     
