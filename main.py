@@ -316,5 +316,13 @@ plt.ylabel("Loss")
 plt.show()
 # %%
 
+acc = history.history["jaccard_coef"]
+val_acc = history.history["val_jaccard_coef"]
 
+plt.plot(epochs,acc,"y",label="Training IoU")
+plt.plot(epochs,val_acc,"r",label="Validation Iou")
+plt.title("Training and validation IoU")
+plt.xlabel("Epochs")
+plt.ylabel("IoU")
+plt.show()
 # %%
