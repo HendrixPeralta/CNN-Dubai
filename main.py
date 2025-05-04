@@ -133,7 +133,9 @@ for image_type in ["images" , "masks"]:
                             individual_patched_masks = image_patches[i,j,:,:]
                             individual_patched_masks = individual_patched_masks[0] 
                             mask_dataset.append(individual_patched_masks)
-
+# %%
+image_dataset = np.array(image_dataset)
+mask_dataset = np.array(mask_dataset)
                     
 # %%
 print(len(image_dataset))
