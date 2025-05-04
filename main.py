@@ -93,21 +93,6 @@ plt.show()
 
 # random_image_id = random.randint(0, len(image_dataset))
 
-# plt.figure(figsize=(14,8))
-
-# plt.subplot(121)  # First subplot
-# plt.imshow(image_dataset[random_image_id])
-# plt.title("Image Patch")
-# plt.axis("off")
-
-# plt.subplot(122)  # Second subplot
-# plt.imshow(mask_dataset[random_image_id], cmap='gray')  # If mask is grayscale
-# plt.title("Mask Patch")
-# plt.axis("off")
-
-# plt.tight_layout()
-# plt.show()
-
 # %%
 # Labels definition 
 
@@ -176,46 +161,29 @@ labels = np.expand_dims(labels, axis=3)
 print(np.unique(labels))
 # %%
 
-# %%
-np.unique(labels)
-
-
-# %%
-print(mask_dataset[0])
-print(labels[0])
-# %%
-random_image_id = random.randint(0, len(image_dataset))
+image_id = random.randint(0, len(image_dataset))
 
 plt.figure(figsize=(14,8))
 
 plt.subplot(121)  # First subplot
-plt.imshow(image_dataset[random_image_id])
+plt.imshow(image_dataset[image_id])
 plt.title("Image Patch")
 plt.axis("off")
 
 plt.subplot(122)  # Second subplot
-# plt.imshow(mask_dataset[random_image_id], cmap='gray')  # If mask is grayscale
-plt.imshow(labels[random_image_id])
+plt.imshow(mask_dataset[image_id])  # If mask is grayscale
 plt.title("Mask Patch")
 plt.axis("off")
 
 plt.tight_layout()
 plt.show()
-
 # %%
-total_classes = len(np.unique(labels))
-labels_categorical_dataset = to_categorical(labels, num_classes=total_classes)
-
-master_training_dataset = image_dataset
-#%%
-print(master_training_dataset.shape)
-print(labels_categorical_dataset.shape)
-
+n_classes = len(np.unique(labels))
+labels_cat = to_categorical(labels, num_classes=n_classes)
 
 # %%
 # Creating training data 
-
-X_train, x_test, Y_train, y_test = train_test_split(master_training_dataset, labels_categorical_dataset, test_size=0.15, random_state=100)
+X_train, x_test, Y_train, y_test = train_test_split(image_dataset, labels_cat, test_size=0.20, random_state=15)
 
 training_test_datasets = [X_train, x_test, Y_train, y_test]
 
