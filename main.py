@@ -71,7 +71,7 @@ for path, subdirs, files in os.walk(os.path.join(dataset_root_folder,dataset_nam
                     for j in range(patched_mask.shape[1]):
                         single_patched_mask = patched_mask[i, j, :, :]
                         
-                        single_patched_mask = scaler.fit_transform(single_patched_mask.reshape(-1,single_patched_mask.shape[-1])).reshape(single_patched_mask.shape)
+                        # single_patched_mask = scaler.fit_transform(single_patched_mask.reshape(-1,single_patched_mask.shape[-1])).reshape(single_patched_mask.shape)
                         
                         single_patched_mask = single_patched_mask[0]
                         mask_dataset.append(single_patched_mask)
@@ -109,34 +109,6 @@ plt.show()
 # plt.show()
 
 # %%
-
-# %%
-
-# %%
-# %%
-print(type(image))
-# %%
-
-# %%
-
-# %%
-
-                    
-# %%
-
-# %%
-
-# %%
-
-# %%
-
-# %%
-
-
- 
-# %%
-plt.imshow(mask_dataset[0])
-# %%
 # Labels definition 
 
     # Building: #3C1098
@@ -146,49 +118,47 @@ plt.imshow(mask_dataset[0])
     # Water: #E2A929
     # Unlabeled: #9B9B9B
  
-class_building = "#3C1098"
-class_building = class_building.strip("#")
-class_building = np.array(tuple(int(class_building[i:i+2],16)for i in (0,2,4)))
-print(class_building)
+building = "#3C1098"
+building = building.strip("#")
+building = np.array(tuple(int(building[i:i+2],16)for i in (0,2,4)))
+print(building)
 
-class_land = "#8429F6"
-class_land = class_land.strip("#")
-class_land = np.array(tuple(int(class_land[i:i+2],16)for i in (0,2,4)))
-print(class_land)
+land = "#8429F6"
+land = land.strip("#")
+land = np.array(tuple(int(land[i:i+2],16)for i in (0,2,4)))
+print(land)
 
-class_road = "#6EC1E4"
-class_road = class_road.strip("#")
-class_road = np.array(tuple(int(class_road[i:i+2],16)for i in (0,2,4)))
-print(class_road)
+road = "#6EC1E4"
+road = road.strip("#")
+road = np.array(tuple(int(road[i:i+2],16)for i in (0,2,4)))
+print(road)
 
-class_vegetation = "#FEDD3A"
-class_vegetation = class_vegetation.strip("#")
-class_vegetation = np.array(tuple(int(class_vegetation[i:i+2],16)for i in (0,2,4)))
-print(class_vegetation)
+vegetation = "#FEDD3A"
+vegetation = vegetation.strip("#")
+vegetation = np.array(tuple(int(vegetation[i:i+2],16)for i in (0,2,4)))
+print(vegetation)
 
-class_water = "#E2A929"
-class_water = class_water.strip("#")
-class_water = np.array(tuple(int(class_water[i:i+2],16)for i in (0,2,4)))
-print(class_water)
+water = "#E2A929"
+water = water.strip("#")
+water = np.array(tuple(int(water[i:i+2],16)for i in (0,2,4)))
+print(water)
 
-class_unlabeled = "#9B9B9B"
-class_unlabeled = class_unlabeled.strip("#")
-class_unlabeled = np.array(tuple(int(class_unlabeled[i:i+2],16)for i in (0,2,4)))
-print(class_unlabeled)
+unlabeled = "#9B9B9B"
+unlabeled = unlabeled.strip("#")
+unlabeled = np.array(tuple(int(unlabeled[i:i+2],16)for i in (0,2,4)))
+print(unlabeled)
 
 
-# %%
-mask_dataset.shape[0]
 # %%
 # 
 def rgb_to_label(label):
     label_segment = np.zeros(label.shape, dtype=np.uint8)
-    label_segment[np.all(label == class_water, axis=-1)] = 0 
-    label_segment[np.all(label == class_land, axis=-1)] = 1
-    label_segment[np.all(label == class_road, axis=-1)] =2
-    label_segment[np.all(label == class_building, axis=-1)] = 3
-    label_segment[np.all(label == class_vegetation, axis=-1)] = 4
-    label_segment[np.all(label == class_unlabeled, axis=-1)] = 5
+    label_segment[np.all(label == building, axis=-1)] = 0
+    label_segment[np.all(label == land, axis=-1)] = 1
+    label_segment[np.all(label == road, axis=-1)] =2
+    label_segment[np.all(label == vegetation, axis=-1)] = 3
+    label_segment[np.all(label == water, axis=-1)] = 4 
+    label_segment[np.all(label == unlabeled, axis=-1)] = 5
     
     label_segment = label_segment[:,:,0]
     return label_segment
@@ -196,16 +166,16 @@ def rgb_to_label(label):
 # %%
 labels = []
 for i in range(mask_dataset.shape[0]):
-    
     label = rgb_to_label(mask_dataset[i])
     labels.append(label)
     
     
 labels = np.array(labels)
-# %%
-print(len(labels))
-# %%
 labels = np.expand_dims(labels, axis=3)
+# %%
+print(np.unique(labels))
+# %%
+
 # %%
 np.unique(labels)
 
