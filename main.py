@@ -197,12 +197,13 @@ from keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, Conv2DTransp
 from keras.layers import concatenate, BatchNormalization, Dropout, Lambda
 
 import segmentation_models as sm
+sm.set_framework('tf.keras')
 # %%
-from keras import backend as k 
+import keras.ops as k
 # %%
 def jaccard_coef(y_true, y_pred):
-    y_pred_flatten = k.flatten(y_pred)
-    y_true_flatten = k.flatten(y_true)
+    y_pred_flatten = k.reshape(y_pred,[-1])
+    y_true_flatten = k.reshape(y_true,[-1])
     intersection = k.sum(y_true_flatten * y_pred_flatten)
     iou = (intersection + 1.0 ) / (k.sum(y_true_flatten) + k.sum(y_pred_flatten) - intersection + 1.0)
     return iou
@@ -294,4 +295,11 @@ tf.keras.backend.clear_session()
 model.compile(optimizer="adam", loss=total_loss, metrics=metrics)
 model.summary
 # model.input_shape
+# %%
+history1 = model.fit(X_train,Y_train,
+                     batch_size=16,
+                     verbose=1,
+                     epochs=100,
+                     validation_data=(x_test,y_test),
+                     shuffle=False)
 # %%
