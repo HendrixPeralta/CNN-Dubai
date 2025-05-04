@@ -220,7 +220,7 @@ def unet_model(n_classes, image_height, image_width, image_channels):
     
     c3 = Conv2D(64, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(p2)
     c3 = Dropout(0.2)(c3)
-    c3 = Conv2D(64, (3,3), activation="relu", kernel_initializer="he_normal", paddig="same")(c3)
+    c3 = Conv2D(64, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(c3)
     p3 = MaxPooling2D((2,2))(c3)
     
     c4 = Conv2D(128, (3,3), activation="relu", kernel_initializer="he_normal", padding="same")(p3)
